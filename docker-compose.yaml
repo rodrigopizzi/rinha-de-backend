@@ -1,0 +1,17 @@
+version: '3.5'
+services:
+  db:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - "mongo:/data/db"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.75'
+          memory: "1.5G"
+
+volumes:
+  mongo:

@@ -1,0 +1,183 @@
+openapi: 3.0.3
+info:
+  title: Rinha de Backend
+  description: Rinha de Backend
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8080'
+    description: Local server
+paths:
+  /pessoas:
+    get:
+      summary: Get Pessoas by termo. Only first 50 records will be returned
+      operationId: getPessoasByTermo
+      parameters:
+        - name: t
+          in: query
+          required: true
+          schema:
+            type: string
+            example: 'josé'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PessoaResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestEntity'
+
+    post:
+      summary: Create Pessoa
+      operationId: createPessoa
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PessoaRequest'
+      responses:
+        '201':
+          description: Created
+          headers:
+            Location:
+              schema:
+                type: string
+                format: uri
+                example: 'http://localhost:8080/pessoas/123e4567-e89b-12d3-a456-426614174000'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntity'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestEntity'
+
+  /pessoas/{id}:
+    # should return Pessoa by id
+    get:
+      summary: Get Pessoa by id
+      operationId: getPessoaById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: '123e4567-e89b-12d3-a456-426614174000'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PessoaResponse'
+        '404':
+          description: Not Found
+
+
+
+
+
+components:
+  schemas:
+    # create a schema Pessoa whith properties: apelido, nome, nascimento and stack
+    # apelido is required and has a max length of 32
+    # nome is required and has a max length of 100
+    # nascimento is required and has a format date (yyyy-MM-dd)
+    # stack is optional and is an array of strings with 32 max length
+    PessoaRequest:
+      type: object
+      properties:
+        apelido:
+          nullable: true
+          uniqueItems: true
+          type: string
+          maxLength: 32
+          example: 'josé'
+          format: string
+        nome:
+          nullable: true
+          type: string
+          maxLength: 100
+          example: 'José da Silva'
+          format: string
+        nascimento:
+          type: string
+          format: date
+          example: '1990-01-01'
+        stack:
+          type: array
+          items:
+            type: string
+            maxLength: 32
+            format: string
+          example: [ 'java', 'python', 'javascript', 'c#' ]
+      required:
+        - nascimento
+    PessoaResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: '123e4567-e89b-12d3-a456-426614174000'
+        apelido:
+          uniqueItems: true
+          type: string
+          maxLength: 32
+          example: 'josé'
+        nome:
+          type: string
+          maxLength: 100
+          example: 'José da Silva'
+        nascimento:
+          type: string
+          format: date
+          example: '1990-01-01'
+        stack:
+          type: array
+          items:
+            type: string
+            maxLength: 32
+          example: [ 'java', 'python', 'javascript', 'c#' ]
+      required:
+        - apelido
+        - nome
+        - nascimento
+    # create a schema UnprocessableEntity with properties:
+    # errors is an array of strings
+    UnprocessableEntity:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+          example: [ 'apelido is required', 'apelido must be unique' ]
+    # create a schema BadRequestEntity with properties:
+    # errors is an array of strings
+    BadRequestEntity:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+          example: [ 'nome should be string' ]
+
+
+

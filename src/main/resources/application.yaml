@@ -1,0 +1,17 @@
+spring:
+  jackson:
+    date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
+    serialization:
+      write-dates-as-timestamps: false
+    deserialization:
+      fail-on-missing-creator-properties: true
+  data:
+    mongodb:
+      database: test
+      host: localhost
+      port: 27017
+      uri: mongodb://localhost/test
+      auto-index-creation: true
+springdoc:
+  swagger-ui:
+    path: /docs
