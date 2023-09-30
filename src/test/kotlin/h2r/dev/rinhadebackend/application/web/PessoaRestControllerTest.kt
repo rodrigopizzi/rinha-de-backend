@@ -9,6 +9,7 @@ import org.junit.platform.suite.api.SuiteDisplayName
 @SuiteDisplayName("Pessoa endpoint tests")
 @SelectClasses(
     CreatePessoaEndpointTest::class,
-    GetPessoaEndpointTest::class
+    GetPessoaEndpointTest::class,
+    GetPessoasByTermoEndpointTest::class
 )
 class PessoaRestControllerTest

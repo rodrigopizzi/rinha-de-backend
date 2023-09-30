@@ -14,7 +14,9 @@ data class PessoaDocument(
     val apelido: String,
     val nome: String,
     val nascimento: LocalDate,
-    val stack: List<String>?
+    val stack: List<String>?,
+    @Indexed
+    val termo: String
 ) {
 
     companion object {
@@ -24,7 +26,8 @@ data class PessoaDocument(
                 apelido = pessoa.apelido,
                 nome = pessoa.nome,
                 nascimento = pessoa.nascimento,
-                stack = pessoa.stack
+                stack = pessoa.stack,
+                termo = "${pessoa.apelido}${pessoa.nome}${pessoa.stack.joinToString("")}"
             )
         }
     }

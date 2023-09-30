@@ -19,4 +19,8 @@ class PessoaDatabasePortImpl(
     override fun findById(id: UUID): Pessoa? {
         return pessoaRepository.findById(id.toString()).getOrNull()?.toDomain()
     }
+
+    override fun getByTermo(termo: String): List<Pessoa> {
+        return pessoaRepository.findTop50ByTermoRegex(".*$termo.*").map { it.toDomain() }
+    }
 }
