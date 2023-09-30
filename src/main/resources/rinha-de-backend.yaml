@@ -88,7 +88,18 @@ paths:
         '404':
           description: Not Found
 
-
+  /contagem-pessoas:
+    get:
+      summary: Get Contagem Pessoas
+      operationId: getContagemPessoas
+      responses:
+        '200':
+          description: OK
+          content:
+            application/text:
+              schema:
+                type: integer
+                example: 100
 
 
 

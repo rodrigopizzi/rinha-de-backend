@@ -8,6 +8,7 @@ import h2r.dev.rinhadebackend.application.web.response.pessoaResponseDtoFromDoma
 import h2r.dev.rinhadebackend.domain.usecase.GetPessoaUseCase
 import h2r.dev.rinhadebackend.domain.usecase.CreatePessoaUseCase
 import h2r.dev.rinhadebackend.domain.usecase.GetPessoasByTermoUseCase
+import h2r.dev.rinhadebackend.infra.database.repository.PessoaRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -22,7 +23,8 @@ import java.util.*
 class PessoaRestController(
     private val createPessoaUseCase: CreatePessoaUseCase,
     private val getPessoaUseCase: GetPessoaUseCase,
-    private val getPessoasByTermoUseCase: GetPessoasByTermoUseCase
+    private val getPessoasByTermoUseCase: GetPessoasByTermoUseCase,
+    private val pessoaRepository: PessoaRepository
 ) : DefaultApi {
 
     val logger: Logger = LoggerFactory.getLogger(PessoaRestController::class.java)
@@ -56,6 +58,15 @@ class PessoaRestController(
         getPessoasByTermoUseCase.getByTermo(t).also {
             logger.info("end getPessoasByTermo() with size: ${it.size}")
             return ResponseEntity.ok(it.map { pessoa -> pessoaResponseDtoFromDomain(pessoa) })
+        }
+    }
+
+    @Transactional
+    override fun getContagemPessoas(): ResponseEntity<Int> {
+        logger.info("start getContagemPessoas()")
+        return pessoaRepository.count().let {
+            logger.info("end getContagemPessoas(): $it")
+            ResponseEntity.ok(it.toInt())
         }
     }
 
