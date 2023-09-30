@@ -1,6 +1,6 @@
-package h2r.dev.rinhadebackend.database.repository
+package h2r.dev.rinhadebackend.infra.database.repository
 
-import h2r.dev.rinhadebackend.database.document.PessoaDocument
+import h2r.dev.rinhadebackend.infra.database.document.PessoaDocument
 import org.springframework.data.mongodb.repository.MongoRepository
 
 interface PessoaRepository : MongoRepository<PessoaDocument, String>

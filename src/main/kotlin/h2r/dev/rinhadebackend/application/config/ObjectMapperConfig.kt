@@ -1,4 +1,4 @@
-package h2r.dev.rinhadebackend.config
+package h2r.dev.rinhadebackend.application.config
 
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonToken

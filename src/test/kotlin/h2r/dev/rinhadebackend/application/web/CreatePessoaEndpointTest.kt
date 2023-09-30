@@ -1,4 +1,4 @@
-package h2r.dev.rinhadebackend.web
+package h2r.dev.rinhadebackend.application.web
 
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
