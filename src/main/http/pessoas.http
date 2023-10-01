@@ -1,5 +1,5 @@
 ### Exemplos de requisições válidas para o endpoint de pessoas
-POST http://localhost:8080/pessoas
+POST http://localhost:9999/pessoas
 Content-Type: application/json
 
 {

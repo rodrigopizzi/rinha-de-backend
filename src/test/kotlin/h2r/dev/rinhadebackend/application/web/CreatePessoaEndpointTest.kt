@@ -1,44 +1,27 @@
 package h2r.dev.rinhadebackend.application.web
 
+import h2r.dev.rinhadebackend.RinhaDeBackendApplicationTests
+import h2r.dev.rinhadebackend.infra.database.repository.PessoaRepository
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.util.TestPropertyValues
-import org.springframework.context.ApplicationContextInitializer
-import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.http.MediaType
-import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import org.testcontainers.containers.MongoDBContainer
-import org.testcontainers.junit.jupiter.Container
-import org.testcontainers.junit.jupiter.Testcontainers
-import org.testcontainers.utility.DockerImageName
 
-
-@SpringBootTest
-@AutoConfigureMockMvc
-@Testcontainers
-@ContextConfiguration(initializers = [CreatePessoaEndpointTest.Initializer::class])
-class CreatePessoaEndpointTest {
-
-    companion object {
-        @Container
-        var mongodb = MongoDBContainer(DockerImageName.parse("mongo:4.0.10"))
-    }
-
-    internal class Initializer : ApplicationContextInitializer<ConfigurableApplicationContext> {
-        override fun initialize(configurableApplicationContext: ConfigurableApplicationContext) {
-            TestPropertyValues.of(
-                "spring.data.mongodb.uri=" + mongodb.connectionString
-            ).applyTo(configurableApplicationContext.environment)
-        }
-    }
+class CreatePessoaEndpointTest : RinhaDeBackendApplicationTests() {
 
     @Autowired
     private lateinit var mvc: MockMvc
+
+    @Autowired
+    private lateinit var pessoaRepository: PessoaRepository
+
+    @BeforeEach
+    fun beforeEach() {
+        pessoaRepository.deleteAll()
+    }
 
     @Test
     fun `should 422 when nome is null`() {

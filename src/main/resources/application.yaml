@@ -7,10 +7,10 @@ spring:
       fail-on-missing-creator-properties: true
   data:
     mongodb:
-      database: test
-      host: localhost
-      port: 27017
-      uri: mongodb://localhost/test
+      database: ${DB_NAME:test}
+      host: ${DB_HOST:localhost}
+      port: ${DB_PORT:27017}
+      uri: mongodb://${DB_HOST:localhost}/${DB_NAME:test}
       auto-index-creation: true
 springdoc:
   swagger-ui:
