@@ -65,8 +65,6 @@ services:
     hostname: mongo
     ports:
       - "27017:27017"
-    volumes:
-      - "mongo:/data/db"
     networks:
       - rinha-de-backend
 #    deploy:
@@ -75,9 +73,6 @@ services:
 #          cpus: '0.75'
 #          memory: "1.5G"
 
-volumes:
-  mongo:
-
 networks:
   rinha-de-backend:
-    driver: bridge
+    driver: host

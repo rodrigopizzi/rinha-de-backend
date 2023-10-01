@@ -62,11 +62,11 @@ class PessoaRestController(
     }
 
     @Transactional
-    override fun getContagemPessoas(): ResponseEntity<Int> {
+    override fun getContagemPessoas(): ResponseEntity<String> {
         logger.info("start getContagemPessoas()")
         return pessoaRepository.count().let {
             logger.info("end getContagemPessoas(): $it")
-            ResponseEntity.ok(it.toInt())
+            ResponseEntity.ok(it.toString())
         }
     }
 

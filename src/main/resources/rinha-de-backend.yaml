@@ -96,10 +96,10 @@ paths:
         '200':
           description: OK
           content:
-            application/text:
+            text/plain:
               schema:
-                type: integer
-                example: 100
+                type: string
+                example: 10
 
 
 
