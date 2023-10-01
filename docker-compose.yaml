@@ -1,7 +1,6 @@
 version: '3.5'
 services:
   api1: # API - Instância 01
-#    image: api
     build:
       context: .
       dockerfile: Dockerfile
@@ -14,14 +13,15 @@ services:
       - db
     expose:
       - "8080"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.25'
-          memory: '0.5GB'
+    networks:
+      - rinha-de-backend
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.25'
+#          memory: '0.5GB'
 
   api2: # API - Instância 01
-#    image: api
     build:
       context: .
       dockerfile: Dockerfile
@@ -34,11 +34,13 @@ services:
       - db
     expose:
       - "8080"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.25'
-          memory: '0.5GB'
+    networks:
+      - rinha-de-backend
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.25'
+#          memory: '0.5GB'
 
   nginx: # Load Balancer
     image: nginx:latest
@@ -49,11 +51,13 @@ services:
       - api2
     ports:
       - "9999:9999"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.25'
-          memory: '0.5GB'
+    networks:
+      - rinha-de-backend
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.25'
+#          memory: '0.5GB'
 
   db:
     image: mongo
@@ -63,11 +67,17 @@ services:
       - "27017:27017"
     volumes:
       - "mongo:/data/db"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.75'
-          memory: "1.5G"
+    networks:
+      - rinha-de-backend
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.75'
+#          memory: "1.5G"
 
 volumes:
   mongo:
+
+networks:
+  rinha-de-backend:
+    driver: bridge

@@ -9,6 +9,7 @@ EXPOSE 8080
 ENV SPRING_PROFILES_ACTIVE=production
 
 CMD ["java", "-jar", "app.jar"]
+#CMD ["tail", "-f", "/dev/null"]
 
 
 
