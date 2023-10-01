@@ -1,4 +1,4 @@
-version: '3.5'
+version: '3.9d'
 services:
   api1: # API - Instância 01
     build:
@@ -11,15 +11,13 @@ services:
       - DB_NAME=test
     depends_on:
       - db
-    expose:
-      - "8080"
     networks:
-      - rinha-de-backend
-#    deploy:
-#      resources:
-#        limits:
-#          cpus: '0.25'
-#          memory: '0.5GB'
+      - rinha-de-backend-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: '0.5GB'
 
   api2: # API - Instância 01
     build:
@@ -30,17 +28,16 @@ services:
       - DB_HOST=mongo
       - DB_PORT=27017
       - DB_NAME=test
+      - SERVER_PORT=8081
     depends_on:
       - db
-    expose:
-      - "8080"
     networks:
-      - rinha-de-backend
-#    deploy:
-#      resources:
-#        limits:
-#          cpus: '0.25'
-#          memory: '0.5GB'
+      - rinha-de-backend-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: '0.5GB'
 
   nginx: # Load Balancer
     image: nginx:latest
@@ -52,12 +49,12 @@ services:
     ports:
       - "9999:9999"
     networks:
-      - rinha-de-backend
-#    deploy:
-#      resources:
-#        limits:
-#          cpus: '0.25'
-#          memory: '0.5GB'
+      - rinha-de-backend-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: '0.5GB'
 
   db:
     image: mongo
@@ -66,13 +63,13 @@ services:
     ports:
       - "27017:27017"
     networks:
-      - rinha-de-backend
-#    deploy:
-#      resources:
-#        limits:
-#          cpus: '0.75'
-#          memory: "1.5G"
+      - rinha-de-backend-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.75'
+          memory: "1.5G"
 
 networks:
-  rinha-de-backend:
-    driver: host
+  rinha-de-backend-network:
+    driver: bridge
