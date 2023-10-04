@@ -5,13 +5,17 @@ import h2r.dev.rinhadebackend.domain.port.PessoaDatabasePort
 import h2r.dev.rinhadebackend.infra.database.document.PessoaDocument
 import h2r.dev.rinhadebackend.infra.database.repository.PessoaRepository
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Isolation
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 import kotlin.jvm.optionals.getOrNull
 
 @Component
+@Transactional(isolation = Isolation.READ_UNCOMMITTED)
 class PessoaDatabasePortImpl(
     private val pessoaRepository: PessoaRepository
 ) : PessoaDatabasePort {
+
     override fun save(pessoa: Pessoa): Pessoa {
         return pessoaRepository.insert(PessoaDocument.fromDomain(pessoa)).toDomain()
     }
@@ -22,5 +26,9 @@ class PessoaDatabasePortImpl(
 
     override fun getByTermo(termo: String): List<Pessoa> {
         return pessoaRepository.findTop50ByTermoRegex(".*$termo.*").map { it.toDomain() }
+    }
+
+    override fun isApelidoExists(apelido: String): Boolean {
+        return pessoaRepository.existsByApelido(apelido)
     }
 }

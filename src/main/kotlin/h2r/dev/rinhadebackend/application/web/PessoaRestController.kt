@@ -13,7 +13,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 import java.net.URI
@@ -29,7 +28,6 @@ class PessoaRestController(
 
     val logger: Logger = LoggerFactory.getLogger(PessoaRestController::class.java)
 
-    @Transactional
     override fun createPessoa(pessoaRequestDto: PessoaRequestDto): ResponseEntity<Unit> {
         logger.info("start createPessoa(): $pessoaRequestDto")
         createPessoaUseCase.create(pessoaRequestDto.toDomain()).also {
@@ -39,7 +37,6 @@ class PessoaRestController(
         }
     }
 
-    @Transactional
     override fun getPessoaById(id: UUID): ResponseEntity<PessoaResponseDto> {
         logger.info("start getPessoaById(): id=$id")
 
@@ -49,7 +46,6 @@ class PessoaRestController(
         }
     }
 
-    @Transactional
     override fun getPessoasByTermo(t: String?): ResponseEntity<List<PessoaResponseDto>> {
         logger.info("start getPessoasByTermo(): t=$t")
         if (t.isNullOrBlank()) {
@@ -61,7 +57,6 @@ class PessoaRestController(
         }
     }
 
-    @Transactional
     override fun getContagemPessoas(): ResponseEntity<String> {
         logger.info("start getContagemPessoas()")
         return pessoaRepository.count().let {

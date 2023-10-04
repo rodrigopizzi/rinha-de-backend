@@ -1,17 +1,17 @@
-FROM openjdk:17-jdk-alpine
-
+# Build stage
+FROM ghcr.io/graalvm/native-image:ol8-java17-22.3.3 as graalvm
+RUN microdnf -y install wget unzip zip findutils tar
+COPY . /app
 WORKDIR /app
+RUN \
+    curl -s "https://get.sdkman.io" | bash; \
+    source "$HOME/.sdkman/bin/sdkman-init.sh"; \
+    sdk install gradle; \
+    gradle nativeCompile
 
-COPY build/libs/rinha-de-backend-0.0.1-SNAPSHOT.jar /app/app.jar
 
+# Runtime stage
+FROM frolvlad/alpine-glibc
 EXPOSE 8080
-
-ENV SPRING_PROFILES_ACTIVE=production
-
-CMD ["java", "-jar", "app.jar"]
-#CMD ["tail", "-f", "/dev/null"]
-
-
-
-
-
+COPY --from=graalvm /app/build/native/nativeCompile/ /app/rinha
+ENTRYPOINT ["/app/rinha/rinha-de-backend"]

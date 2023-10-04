@@ -7,4 +7,5 @@ interface PessoaDatabasePort {
     fun save(pessoa: Pessoa): Pessoa
     fun findById(id: UUID): Pessoa?
     fun getByTermo(termo: String): List<Pessoa>
+    fun isApelidoExists(apelido: String): Boolean
 }
